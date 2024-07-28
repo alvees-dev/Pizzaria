@@ -1,5 +1,7 @@
 package br.com.magna.atendimento;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -86,7 +88,7 @@ public class Carrinho {
 
 
 	public void exibirCarrinho() {
-	    System.out.println("\n\n------- Carrinho -------");
+	    System.out.println("\n\n------- CARRINHO -------\n");
 
 	    int itens = 0;
 
@@ -105,7 +107,7 @@ public class Carrinho {
 	        itens++;
 	    }
 
-	    System.out.printf("%nPreço Total: R$ %.2f", this.precoTotal);
+	    System.out.printf("%nSubTotal: R$ %.2f", this.precoTotal);
 	}
 
 	public void listarCarrinho() {
@@ -116,15 +118,48 @@ public class Carrinho {
 
 	        if (item instanceof MeiaPizza) {
 	            MeiaPizza meiaPizza = (MeiaPizza) item;
-	            System.out.println((MeiasPizzas + 1) + ". " + meiaPizza.toString() + " | " + meiaPizza.getPreco());
+	            System.out.printf(meiaPizza.getName() + " " + meiaPizza.getPreco());
 	        } else {
-	            System.out.println((MeiasPizzas + 1) + ". " + item);
+	            System.out.println(item);
 	        }
 
 	        System.out.println();
 	        MeiasPizzas++;
 	    }
 
-	    System.out.printf("Preço Total: R$ %.2f", this.precoTotal);
+	    System.out.printf("TOTAL: R$ %.2f", this.precoTotal);
+	}
+	
+	public void recibo() {
+
+		DateTimeFormatter dataFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+		LocalDateTime horario = LocalDateTime.now();
+		String dataHora = horario.format(dataFormat);
+		StringBuilder cupomFiscal = new StringBuilder();
+	
+		
+		cupomFiscal.append("\n*****************RECIBO*****************\n\n");
+		cupomFiscal.append(String.format("%29s", "PIZZARIA ALVES\n"));
+		cupomFiscal.append(String.format("%31s", "RUA DOS TESTE, 123\n"));
+		cupomFiscal.append(String.format("%27s", "SÃO PAULO\n\n"));
+		cupomFiscal.append(String.format("%31s", "FONE (11)99999-9999\n"));
+		cupomFiscal.append("CNPJ 99.999.999/0009-99 I.E. 999999999999\n");
+		cupomFiscal.append("------------------------------------------\n");
+		cupomFiscal.append(String.format("%28s", "CUPOM FISCAL\n"));
+        cupomFiscal.append(String.format("%-4s %37s", "ITEM", "VALOR"));
+        System.out.println(cupomFiscal.toString());
+        listarCarrinho();
+
+		
+		
+		
+		
+
+//		System.out.println("********** RAZAO SOCIAL **********");
+//		System.out.println("\nData e Hora da Compra: " + dataHora);
+//		System.out.println("\nItens: \n");
+//		pedido.listarCarrinho();
+//		System.out.println("\n*****************************\n");
+//		cadastro.exibirCadastro();
 	}
 }

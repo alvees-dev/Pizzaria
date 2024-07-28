@@ -13,10 +13,14 @@ public class MeiaPizza {
     public double getPreco() {
         return Math.max(pizza1.getPreco(), pizza2.getPreco());
     }
+    
+    public String getName() {
+    	return "Meia " + pizza1.getNome() + " Meia " + pizza2.getNome();
+    }
 
     @Override
     public String toString() {
-        return "Meia " + pizza1.getNome() + " Meia " + pizza2.getNome();
+        return "Meia " + pizza1.getNome() + " Meia " + pizza2.getNome() + " | R$";
     }
 }
 

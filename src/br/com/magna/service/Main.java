@@ -7,7 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		InterfaceCliente fazerPedido = new InterfaceCliente();
-		fazerPedido.play();
+		fazerPedido.start();
 	}
 
 }
