@@ -13,6 +13,7 @@ import br.com.magna.cardapio.Pizza;
 
 public class Carrinho {
 
+	private CadastroCliente cliente = new CadastroCliente();
 	Scanner scan = new Scanner(System.in);
 	protected double precoTotal;
 	List<Object> carrinhos;
@@ -40,126 +41,96 @@ public class Carrinho {
 	}
 
 	public void adicionarMeiaPizza(Pizza pizza1, Pizza pizza2) {
-	    MeiaPizza meiaPizza = new MeiaPizza(pizza1, pizza2);
-	    this.precoTotal += meiaPizza.getPreco();
-	    carrinhos.add(meiaPizza);
+		MeiaPizza meiaPizza = new MeiaPizza(pizza1, pizza2);
+		this.precoTotal += meiaPizza.getPreco();
+		carrinhos.add(meiaPizza);
 	}
-	
+
 	private void removerItem(int opcaoRemoverItem) {
-	    opcaoRemoverItem = 0;
+		opcaoRemoverItem = 0;
 
-	    while (opcaoRemoverItem < this.carrinhos.size() || opcaoRemoverItem > this.carrinhos.size()) {
-	        this.exibirCarrinho();
-	        System.out.println("\n\nDigite o número do item que deseja remover: ");
+		while (opcaoRemoverItem < this.carrinhos.size() || opcaoRemoverItem > this.carrinhos.size()) {
+			this.exibirCarrinho();
+			System.out.println("\n\nDigite o número do item que deseja remover: ");
 
-	        try {
-	            // Recebe opcao digitada
-	            opcaoRemoverItem = scan.nextInt();
+			try {
+				// Recebe opcao digitada
+				opcaoRemoverItem = scan.nextInt();
 
-	            // verifica se a opção digitada esta entre as disponiveis
-	            if (opcaoRemoverItem > 0 && opcaoRemoverItem <= this.carrinhos.size()) {
-	                // remove o item desejado
-	                Object itemRemovido = this.carrinhos.remove(opcaoRemoverItem - 1);
-	                
-	                // Verifica o tipo do item removido e ajusta o preço total
-	                if (itemRemovido instanceof Pizza) {
-	                    Pizza pizza = (Pizza) itemRemovido;
-	                    this.precoTotal -= pizza.getPreco();
-	                } else if (itemRemovido instanceof Bebida) {
-	                    Bebida bebida = (Bebida) itemRemovido;
-	                    this.precoTotal -= bebida.getPreco();
-	                } else if (itemRemovido instanceof MeiaPizza) {
-	                    MeiaPizza meiaPizza = (MeiaPizza) itemRemovido;
-	                    this.precoTotal -= meiaPizza.getPreco();
-	                }
+				// verifica se a opção digitada esta entre as disponiveis
+				if (opcaoRemoverItem > 0 && opcaoRemoverItem <= this.carrinhos.size()) {
+					// remove o item desejado
+					Object itemRemovido = this.carrinhos.remove(opcaoRemoverItem - 1);
 
-	                System.out.println("\nItem removido: \n" + itemRemovido);
-	                break; // Sai do loop se a opção for válida
-	            } else {
-	                System.out.println("Opção inválido. Por favor, digite um número válido.");
-	            }
-	        } catch (InputMismatchException e) {
-	            //clear();
-	            System.out.println("Opção inválida");
-	            scan.nextLine();
-	        }
-	    }
+					// Verifica o tipo do item removido e ajusta o preço total
+					if (itemRemovido instanceof Pizza) {
+						Pizza pizza = (Pizza) itemRemovido;
+						this.precoTotal -= pizza.getPreco();
+					} else if (itemRemovido instanceof Bebida) {
+						Bebida bebida = (Bebida) itemRemovido;
+						this.precoTotal -= bebida.getPreco();
+					} else if (itemRemovido instanceof MeiaPizza) {
+						MeiaPizza meiaPizza = (MeiaPizza) itemRemovido;
+						this.precoTotal -= meiaPizza.getPreco();
+					}
+
+					System.out.println("\nItem removido: \n" + itemRemovido);
+					break; // Sai do loop se a opção for válida
+				} else {
+					System.out.println("Opção inválido. Por favor, digite um número válido.");
+				}
+			} catch (InputMismatchException e) {
+				// clear();
+				System.out.println("Opção inválida");
+				scan.nextLine();
+			}
+		}
 	}
-
 
 	public void exibirCarrinho() {
-	    System.out.println("\n\n------- CARRINHO -------\n");
+		System.out.println("\n\n---------- CARRINHO ----------\n");
 
-	    int itens = 0;
+		int itens = 0;
 
-	    while (itens < carrinhos.size()) {
-	    	
-	        Object item = carrinhos.get(itens);
+		while (itens < carrinhos.size()) {
 
-	        if (item instanceof MeiaPizza) {
-	            MeiaPizza meiaPizza = (MeiaPizza) item;
-	            System.out.println((itens + 1) + ". " + meiaPizza.toString() + " " + meiaPizza.getPreco());
-	        } else {
-	            System.out.println((itens + 1) + ". " + item);
-	        }
+			Object item = carrinhos.get(itens);
 
-	        System.out.println("==================================");
-	        itens++;
-	    }
+			if (item instanceof MeiaPizza) {
+				MeiaPizza meiaPizza = (MeiaPizza) item;
+				System.out.println((itens + 1) + ". " + meiaPizza.toString() + " " + meiaPizza.getPreco());
+			} else {
+				System.out.println((itens + 1) + ". " + item);
+			}
 
-	    System.out.printf("%nSubTotal: R$ %.2f", this.precoTotal);
+			System.out.println("==================================");
+			itens++;
+		}
+
+		System.out.printf("%nSubTotal: R$ %.2f", this.precoTotal);
 	}
 
 	public void listarCarrinho() {
-	    int MeiasPizzas = 0;
+		for (int i = 0; i < carrinhos.size(); i++) {
+			Object item = carrinhos.get(i);
 
-	    while (MeiasPizzas < carrinhos.size()) {
-	        Object item = carrinhos.get(MeiasPizzas);
+			if (item instanceof MeiaPizza) {
+				MeiaPizza meiaPizza = (MeiaPizza) item;
+				System.out.printf("%s %15s", meiaPizza.getName(), meiaPizza.getPreco());
+			} else {
+				if (item instanceof Pizza) {
+					Pizza pizza = (Pizza) item;
+					System.out.printf("%s %32s", pizza.getNome(), pizza.getPreco());
+				} else if (item instanceof Bebida) {
+					Bebida bebida = (Bebida) item;
+					System.out.printf("%s %36s", bebida.getNome(), bebida.getPreco());
+				}
+			}
 
-	        if (item instanceof MeiaPizza) {
-	            MeiaPizza meiaPizza = (MeiaPizza) item;
-	            System.out.printf(meiaPizza.getName() + " " + meiaPizza.getPreco());
-	        } else {
-	            System.out.println(item);
-	        }
+			System.out.println();
+		}
 
-	        System.out.println();
-	        MeiasPizzas++;
-	    }
-
-	    System.out.printf("TOTAL: R$ %.2f", this.precoTotal);
+		System.out.printf("%nTOTAL: R$ %.2f", this.precoTotal);
 	}
-	
-	public void recibo() {
 
-		DateTimeFormatter dataFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-		LocalDateTime horario = LocalDateTime.now();
-		String dataHora = horario.format(dataFormat);
-		StringBuilder cupomFiscal = new StringBuilder();
-	
-		
-		cupomFiscal.append("\n*****************RECIBO*****************\n\n");
-		cupomFiscal.append(String.format("%29s", "PIZZARIA ALVES\n"));
-		cupomFiscal.append(String.format("%31s", "RUA DOS TESTE, 123\n"));
-		cupomFiscal.append(String.format("%27s", "SÃO PAULO\n\n"));
-		cupomFiscal.append(String.format("%31s", "FONE (11)99999-9999\n"));
-		cupomFiscal.append("CNPJ 99.999.999/0009-99 I.E. 999999999999\n");
-		cupomFiscal.append("------------------------------------------\n");
-		cupomFiscal.append(String.format("%28s", "CUPOM FISCAL\n"));
-        cupomFiscal.append(String.format("%-4s %37s", "ITEM", "VALOR"));
-        System.out.println(cupomFiscal.toString());
-        listarCarrinho();
-
-		
-		
-		
-		
-
-//		System.out.println("********** RAZAO SOCIAL **********");
-//		System.out.println("\nData e Hora da Compra: " + dataHora);
-//		System.out.println("\nItens: \n");
-//		pedido.listarCarrinho();
-//		System.out.println("\n*****************************\n");
-//		cadastro.exibirCadastro();
-	}
 }

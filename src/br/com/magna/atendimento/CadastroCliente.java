@@ -25,19 +25,19 @@ public class CadastroCliente {
 			this.nome = scanner.nextLine();
 			
 			//condição que verifica se os caracteres digitados são letras
-			if (!nome.matches("^[a-zA-Z]+$")) {
+			if (!nome.matches("^[a-zA-Z ]+$")) {
 				System.out.println("Nome inválido");
 			}
 			
-		} while (!nome.matches("^[a-zA-Z]+$"));
+		} while (!nome.matches("^[a-zA-Z ]+$"));
 
 		System.out.println("Digite seu endereço: ");
 		this.endereco = scanner.nextLine();
 	}
 
 	public void exibirCadastro() {
-		System.out.println("Dados do Cliente");
-		System.out.println("Nome: " + nome);
-		System.out.println("Endereço: " + endereco);
+		System.out.println("DADOS CLIENTE\n");
+		System.out.println("NOME: " + this.nome);
+		System.out.println("ENDERECO: " + this.endereco);
 	}
 }

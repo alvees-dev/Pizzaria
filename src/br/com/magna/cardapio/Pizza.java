@@ -49,6 +49,6 @@ public class Pizza {
 
 	@Override
 	public String toString() {
-		return nome + "  |  R$ " + preco;
+		return nome + "			|  R$ " + preco;
 	}
 }

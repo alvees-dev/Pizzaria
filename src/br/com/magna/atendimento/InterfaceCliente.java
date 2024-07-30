@@ -15,6 +15,7 @@ public class InterfaceCliente {
 	private Bebida bebida = new Bebida("nome", 0);
 	private CadastroCliente cadastro = new CadastroCliente();
 	private Carrinho pedido = new Carrinho();
+	String opcaoPagamentoEscolhida = "";
 
 	Scanner scan = new Scanner(System.in);
 
@@ -87,10 +88,10 @@ public class InterfaceCliente {
 	private void escolheItens() {
 
 		int menuPedido = 0;
-		boolean compraConcluida = false;
+		boolean itensEscolhidos = false;
 		clear();
 
-		while (!compraConcluida) {
+		while (!itensEscolhidos) {
 			pedido.exibirCarrinho();
 			exibirOpcoesMenu();
 
@@ -125,7 +126,7 @@ public class InterfaceCliente {
 					System.out.println("Não é possível concluir a compra. Carrinho vazio.");
 				} else {
 					clear();
-					compraConcluida = true;
+					itensEscolhidos = true;
 				}
 				break;
 			case 6:
@@ -189,6 +190,7 @@ public class InterfaceCliente {
 					continue;
 				}
 				System.out.println(pizza.listaPizza().get(selecionaMeia1 - 1));
+				
 				System.out.printf("%n%nSelecione a segunda pizza: %n%n");
 				selecionaMeia2 = scan.nextInt();
 
@@ -199,7 +201,7 @@ public class InterfaceCliente {
 				}
 
 				pedido.adicionarMeiaPizza(pizza.listaPizza().get(selecionaMeia1 - 1),
-						pizza.listaPizza().get(selecionaMeia2));
+						pizza.listaPizza().get(selecionaMeia2 - 1));
 
 				if (selecionaMeia1 == selecionaMeia2) {
 					clear();
@@ -309,7 +311,7 @@ public class InterfaceCliente {
 	private void pagamento() {
 
 		int opcaoPagamento = 0;
-		String opcaoPagamentoEscolhida = "";
+		opcaoPagamentoEscolhida = "";
 
 		do {
 			System.out.println("Selecione o opção");
@@ -353,13 +355,42 @@ public class InterfaceCliente {
 		} while (opcaoPagamento != 0);
 
 	}
+	
+	public void recibo() {
+
+		DateTimeFormatter dataFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+		LocalDateTime horario = LocalDateTime.now();
+		String dataHora = horario.format(dataFormat);
+		StringBuilder cupomFiscal = new StringBuilder();
+		clear();
+
+		cupomFiscal.append("\n******************RECIBO******************\n\n");
+		cupomFiscal.append(String.format("%29s", "PIZZARIA ALVES\n"));
+		cupomFiscal.append(String.format("%31s", "RUA DOS TESTE, 123\n"));
+		cupomFiscal.append(String.format("%27s", "SÃO PAULO\n\n"));
+		cupomFiscal.append(String.format("%31s", "FONE (11)99999-9999\n"));
+		cupomFiscal.append("CNPJ 99.999.999/0009-99 I.E. 999999999999\n");
+		cupomFiscal.append(dataHora + "     CCF:000001   COO:000001\n");
+		cupomFiscal.append("------------------------------------------\n");
+		cupomFiscal.append(String.format("%28s", "CUPOM FISCAL\n"));
+		cupomFiscal.append(String.format("%-4s %37s%n", "ITEM", "VALOR"));
+		System.out.println(cupomFiscal.toString());
+		pedido.listarCarrinho();
+		System.out.println("\n" +opcaoPagamentoEscolhida);
+		System.out.printf("%n============================================%n");
+		cadastro.exibirCadastro();
+		System.out.printf("%n============================================%n");
+		System.out.printf("%30s", "VOLTE SEMPRE\n\n");
+		
+
+	}
 
 
 	public void start() {
-//		exibirBoasVindas();
+		exibirBoasVindas();
 		escolheItens();
-//		pagamento();
-		pedido.recibo();
+		pagamento();
+		recibo();
 	}
 
 }
