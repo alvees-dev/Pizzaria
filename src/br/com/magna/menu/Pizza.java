@@ -1,27 +1,27 @@
-package br.com.magna.cardapio;
+package br.com.magna.menu;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Pizza {
 
-	private String nome;
-	private double preco;
+	private String name;
+	private double price;
 
-	public Pizza(String sabor, double preco) {
-		this.nome = sabor;
-		this.preco = preco;
+	public Pizza(String taste, double price) {
+		this.name = taste;
+		this.price = price;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
 
-	public double getPreco() {
-		return preco;
+	public double getPrice() {
+		return price;
 	}
 
-	public List<Pizza> listaPizza() {
+	public List<Pizza> listPizza() {
 		List<Pizza> pizzas = new ArrayList<>();
 
 		pizzas.add(new Pizza("Bolonhesa", 42.90));
@@ -38,17 +38,17 @@ public class Pizza {
 		return pizzas;
 	}
 
-	public void exibirPizzas() {
+	public void showPizzas() {
 		System.out.println("--------- Pizzas ---------\n");
-		for (int i = 0; i < listaPizza().size(); i++) {
+		for (int i = 0; i < listPizza().size(); i++) {
 			System.out.printf("%02d", i + 1);
-			System.out.printf(".  " + listaPizza().get(i) + "%n%n");
+			System.out.printf(".  " + listPizza().get(i) + "%n%n");
 
 		}
 	}
 
 	@Override
-	public String toString() {
-		return nome + "			|  R$ " + preco;
-	}
+    public String toString() {
+        return String.format("%n %-20s | R$ %.2f", name, price);
+    }
 }

@@ -1,8 +1,8 @@
-package br.com.magna.atendimento;
+package br.com.magna.customer;
 
 import java.util.Scanner;
 
-public class CadastroCliente {
+public class CustomerRegistration {
 
 	private String nome = "G";
 	private String endereco;
@@ -36,7 +36,7 @@ public class CadastroCliente {
 	}
 
 	public void exibirCadastro() {
-		System.out.println("DADOS CLIENTE\n");
+		System.out.printf("%30s", "DADOS CLIENTE\n");
 		System.out.println("NOME: " + this.nome);
 		System.out.println("ENDERECO: " + this.endereco);
 	}
