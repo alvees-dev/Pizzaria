@@ -1,4 +1,4 @@
-package br.com.magna.menu;
+package br.com.magna.pizzaria.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,10 @@ public class Pizza {
 
 	private String name;
 	private double price;
+	
+	public Pizza() {
+		
+	}
 
 	public Pizza(String taste, double price) {
 		this.name = taste;
@@ -39,7 +43,7 @@ public class Pizza {
 	}
 
 	public void showPizzas() {
-		System.out.println("--------- Pizzas ---------\n");
+		System.out.println("----------- PIZZAS -----------\n");
 		for (int i = 0; i < listPizza().size(); i++) {
 			System.out.printf("%02d", i + 1);
 			System.out.printf(".  " + listPizza().get(i) + "%n%n");
@@ -49,6 +53,6 @@ public class Pizza {
 
 	@Override
     public String toString() {
-        return String.format("%n %-20s | R$ %.2f", name, price);
+        return String.format("%n%-23s | R$ %.2f", name, price);
     }
 }

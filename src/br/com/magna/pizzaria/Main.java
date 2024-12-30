@@ -1,6 +1,6 @@
-package br.com.magna.service;
+package br.com.magna.pizzaria;
 
-import br.com.magna.atendimento.CustomerInterface;
+import br.com.magna.pizzaria.view.CustomerInterface;
 
 public class Main {
 	

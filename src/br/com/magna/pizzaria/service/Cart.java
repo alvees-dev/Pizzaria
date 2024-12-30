@@ -1,19 +1,19 @@
-package br.com.magna.atendimento;
+package br.com.magna.pizzaria.service;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import br.com.magna.menu.Drinks;
-import br.com.magna.menu.HalfPizza;
-import br.com.magna.menu.Pizza;
+import br.com.magna.pizzaria.model.Drinks;
+import br.com.magna.pizzaria.model.HalfPizza;
+import br.com.magna.pizzaria.model.Pizza;
 
 public class Cart {
 	
     Scanner scan = new Scanner(System.in);
-    protected double subTotal;
-    List<Object> items;
+    public double subTotal;
+    public List<Object> items;
 
     public Cart() {
         this.items = new ArrayList<>();

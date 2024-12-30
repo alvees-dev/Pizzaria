@@ -1,4 +1,4 @@
-package br.com.magna.menu;
+package br.com.magna.pizzaria.model;
 
 public class HalfPizza {
 	

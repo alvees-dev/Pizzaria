@@ -1,8 +1,8 @@
-package br.com.magna.customer;
+package br.com.magna.pizzaria.customer;
 
 import java.util.Scanner;
 
-public class CustomerRegistration {
+public class Customer {
 
 	private String nome = "G";
 	private String endereco;

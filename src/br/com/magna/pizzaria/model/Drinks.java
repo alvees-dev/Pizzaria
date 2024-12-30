@@ -1,4 +1,4 @@
-package br.com.magna.menu;
+package br.com.magna.pizzaria.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,15 @@ public class Drinks {
 	private String name;
 	private double price;
 
+	public Drinks() {
+		
+	}
+	
+	public Drinks(String name, double price) {
+		this.name = name;
+		this.price = price;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -16,10 +25,6 @@ public class Drinks {
 		return price;
 	}
 
-	public Drinks(String name, double price) {
-		this.name = name;
-		this.price = price;
-	}
 
 	public List<Drinks> listDrinks() {
 		List<Drinks> drinks = new ArrayList<>();
@@ -33,7 +38,7 @@ public class Drinks {
 	}
 
 	public void showDrinks() {
-		System.out.println("------ BEBIDAS ------\n");
+		System.out.println("--------- BEBIDAS ---------\n");
 		for (int i = 0; i < listDrinks().size(); i++) {
 			System.out.println((i + 1) + ". " + listDrinks().get(i) + "\n");
 		}
@@ -41,7 +46,7 @@ public class Drinks {
 
 	@Override
     public String toString() {
-        return String.format("%-23s | R$ %.2f", name, price);
+        return String.format("%n%-23s | R$ %.2f", name, price);
     }
 
 }
