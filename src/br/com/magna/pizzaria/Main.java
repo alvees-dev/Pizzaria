@@ -6,8 +6,8 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
-		CustomerInterface fazerPedido = new CustomerInterface();
-		fazerPedido.start();
+		CustomerInterface placeOrder = new CustomerInterface();
+		placeOrder.start();
 	}
 
 }

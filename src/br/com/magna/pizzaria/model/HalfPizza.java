@@ -24,7 +24,7 @@ public class HalfPizza {
 
     @Override
     public String toString() {
-        return String.format("%n %-20s | R$ %.2f\n%-20s", 
+        return String.format("%n%-20s | R$ %.2f\n%-20s", 
             "Meia " + pizza1.getName(),
             getPrice(),
             "Meia " + pizza2.getName());

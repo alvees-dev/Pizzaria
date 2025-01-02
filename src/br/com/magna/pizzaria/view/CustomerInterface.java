@@ -1,3 +1,4 @@
+// CustomerInterface.java
 package br.com.magna.pizzaria.view;
 
 import java.time.LocalDateTime;
@@ -5,365 +6,292 @@ import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import br.com.magna.pizzaria.customer.Customer;
+
+import br.com.magna.pizzaria.customer.CustomerRepository;
 import br.com.magna.pizzaria.model.Drinks;
 import br.com.magna.pizzaria.model.HalfPizza;
 import br.com.magna.pizzaria.model.Pizza;
-import br.com.magna.pizzaria.service.Cart;
+import br.com.magna.pizzaria.service.Order;
+
 
 public class CustomerInterface {
+    private Scanner scan = new Scanner(System.in);
+    private Order orderService;
+    private CustomerRepository customerRepository;
+    private Pizza pizza;
+    private Drinks drink;
 
-	private Pizza pizza;
-	private Drinks drink;
-	private Customer customerRegistration;
-	private Cart cart;
-	private Scanner scan;
-	private String selectedPaymentOption;
+    public CustomerInterface() {
+        this.orderService = new Order();
+        this.customerRepository = new CustomerRepository();
+        this.pizza = new Pizza("", 0);
+        this.drink = new Drinks("", 0);
+    }
 
-	public CustomerInterface() {
-		this.pizza = new Pizza();
-		this.drink = new Drinks();
-		this.cart = new Cart();
-		this.scan = new Scanner(System.in);
-		this.customerRegistration = new Customer();
-		this.selectedPaymentOption = "";
-	}
+    private void clear() {
+        for (int i = 0; i <= 40; i++) {
+            System.out.println();
+        }
+    }
 
-	private void clear() {
-		for (int i = 0; i <= 40; i++) {
-			System.out.println();
-		}
-	}
+    private void displayWelcome() {
+        System.out.println("Seja Bem-Vindo a Pizzaria Alves\n-------------------------------");
 
-	private void displayWelcome() {
-		System.out.println("""
-				Seja Bem-Vindo a Pizzaria Alves
-				-------------------------------""");
+        int mainMenu = 0;
+        do {
+            System.out.println("\n------- MENU PRINCIPAL --------\n");
+            System.out.println("1. Ver cardápio");
+            System.out.println("2. Pedido");
+            System.out.println("3. Sair\n");
+            System.out.println("Digite sua escolha: ");
 
-		int mainMenu = 0;
+            try {
+                mainMenu = scan.nextInt();
+                scan.nextLine();
 
-		do {
-			System.out.println("""
-					------- MENU PRINCIPAL --------
+                if (mainMenu == 1) {
+                    pizza.showPizzas();
+                    drink.showDrinks();
+                } else if (mainMenu == 2) {
+                    System.out.println("Para prosseguir com o pedido, é necessário se cadastrar!");
+                    customerRepository.adicionaCadastro();
+                    break;
+                } else if (mainMenu == 3) {
+                    System.out.println("Obrigado pelo acesso!");
+                    System.exit(0);
+                } else {
+                    clear();
+                    System.out.println("Opção inválida\n");
+                }
+            } catch (InputMismatchException e) {
+                clear();
+                System.out.println("Digito inválido. Digite uma opção válida.");
+                scan.nextLine();
+            }
+        } while (true);
+    }
 
-					1. Ver cardápio
-					2. Pedido
-					3. Sair
-					        """);
+    private void chooseItems() {
+        boolean itemsChosen = false;
 
-			System.out.println("Digite sua escolha: ");
+        while (!itemsChosen) {
+            displayCart();
+            System.out.println("\nO que gostaria de pedir?\n");
+            System.out.println("1. Pizza Inteira");
+            System.out.println("2. Pizza Meia");
+            System.out.println("3. Bebida");
+            System.out.println("4. Remover item");
+            System.out.println("5. Concluir Pedido");
+            System.out.println("6. Cancelar Compra");
 
-			try {
-				mainMenu = scan.nextInt();
+            try {
+                int option = scan.nextInt();
+                scan.nextLine();
 
-				if (mainMenu == 1) {
-					pizza.showPizzas();
-					drink.showDrinks();
-					continue;
-				} else if (mainMenu == 2) {
-					System.out.println("Para prosseguir com o pedido, é necessário se cadastrar!");
-					customerRegistration.adicionaCadastro();
-					break;
-				} else if (mainMenu == 3) {
-					System.out.println("Obrigado pelo acesso!");
-					System.exit(mainMenu);
-					break;
-				} else {
-					clear();
-					System.out.println("Opção inválida\n");
-				}
-			} catch (InputMismatchException e) {
-				clear();
-				System.out.println("Digito inválido. Digite uma opção válida.");
-				scan.nextLine();
-			}
+                switch (option) {
+                    case 1:
+                        selectWholePizza();
+                        break;
+                    case 2:
+                        selectHalfPizza();
+                        break;
+                    case 3:
+                        selectDrink();
+                        break;
+                    case 4:
+                        if (orderService.getCartService().isEmpty()) {
+                            System.out.println("Não há itens para remover");
+                        } else {
+                            removeItem();
+                        }
+                        break;
+                    case 5:
+                        if (!orderService.getCartService().isEmpty()) {
+                            itemsChosen = true;
+                        } else {
+                            System.out.println("Carrinho vazio!");
+                        }
+                        break;
+                    case 6:
+                        System.out.println("Até a próxima!");
+                        System.exit(0);
+                    default:
+                        System.out.println("Opção inválida");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida");
+                scan.nextLine();
+            }
+        }
+    }
 
-		} while (mainMenu != 2 || mainMenu != 1);
-	}
+    private void selectWholePizza() {
+        while (true) {
+            pizza.showPizzas();
+            System.out.println("\nSelecione a Pizza: ");
+            try {
+                int choice = scan.nextInt();
+                if (choice > 0 && choice <= pizza.listPizza().size()) {
+                    orderService.getCartService().addItem(pizza.listPizza().get(choice - 1));
+                    break;
+                }
+                System.out.println("Opção inválida");
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida");
+                scan.nextLine();
+            }
+        }
+    }
 
-	private void displayMenuOptions() {
-		System.out.println("\n\nO que gostaria de pedir?\n\n" + "1. Pizza Inteira\n" + "2. Pizza Meia\n" + "3. Bebida\n"
-				+ "4. Remover item\n" + "5. Concluir Pedido\n" + "6. Cancelar Compra");
-	}
+    private void selectHalfPizza() {
+        while (true) {
+            pizza.showPizzas();
+            try {
+                System.out.println("Selecione a primeira pizza: ");
+                int first = scan.nextInt();
+                System.out.println("Selecione a segunda pizza: ");
+                int second = scan.nextInt();
 
-	private void chooseItems() {
-		int orderMenu = 0;
-		boolean itemsChosen = false;
-		clear();
+                if (first > 0 && first <= pizza.listPizza().size() &&
+                    second > 0 && second <= pizza.listPizza().size() &&
+                    first != second) {
+                    orderService.getCartService().addHalfPizza(
+                        pizza.listPizza().get(first - 1),
+                        pizza.listPizza().get(second - 1)
+                    );
+                    break;
+                }
+                System.out.println("Seleção inválida");
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida");
+                scan.nextLine();
+            }
+        }
+    }
 
-		while (!itemsChosen) {
-			cart.displayCart();
-			displayMenuOptions();
+    private void selectDrink() {
+        while (true) {
+            drink.showDrinks();
+            System.out.println("\nSelecione a bebida: ");
+            try {
+                int choice = scan.nextInt();
+                if (choice > 0 && choice <= drink.listDrinks().size()) {
+                    orderService.getCartService().addItem(drink.listDrinks().get(choice - 1));
+                    break;
+                }
+                System.out.println("Opção inválida");
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida");
+                scan.nextLine();
+            }
+        }
+    }
 
-			try {
-				orderMenu = scan.nextInt();
-			} catch (InputMismatchException e) {
-				scan.nextLine();
-			}
+    private void removeItem() {
+        displayCart();
+        System.out.println("\nDigite o número do item para remover: ");
+        try {
+            int index = scan.nextInt() - 1;
+            if (index >= 0 && index < orderService.getCartService().getItems().size()) {
+                orderService.getCartService().removeItem(index);
+            } else {
+                System.out.println("Índice inválido");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Entrada inválida");
+            scan.nextLine();
+        }
+    }
 
-			switch (orderMenu) {
-			case 1:
-				selectWholePizza();
-				break;
-			case 2:
-				selectHalfPizza();
-				break;
-			case 3:
-				selectDrink();
-				break;
-			case 4:
-				if (cart.items.isEmpty()) {
-					clear();
-					System.out.println("Não há itens para serem removidos");
-				} else {
-					clear();
-					removeItem();
-				}
-				break;
-			case 5:
-				if (cart.items.isEmpty()) {
-					clear();
-					System.out.println("Não é possível concluir a compra. Carrinho vazio.");
-				} else {
-					clear();
-					itemsChosen = true;
-				}
-				break;
-			case 6:
-				System.out.println("Até a próxima! :)");
-				System.exit(orderMenu);
-				break;
-			default:
-				clear();
-				System.out.println("Opção inválida");
-				System.out.println("Selecione novamente: ");
-				break;
-			}
-		}
-	}
+    private void displayCart() {
+        System.out.println("\n---------- CARRINHO ----------\n");
+        var items = orderService.getCartService().getItems();
+        for (int i = 0; i < items.size(); i++) {
+            System.out.println((i + 1) + ". " + items.get(i));
+            System.out.println("==================================");
+        }
+        System.out.printf("SubTotal: R$ %.2f%n", orderService.getCartService().getSubTotal());
+    }
 
-	private void selectWholePizza() {
-		int selectWhole = 0;
-		clear();
+    private void processPayment() {
+        while (true) {
+            System.out.println("\n-------- PAGAMENTO --------");
+            System.out.println("1. Dinheiro");
+            System.out.println("2. Pix");
+            System.out.println("3. Cartão Débito");
+            System.out.println("4. Cartão Crédito");
+            System.out.println("5. Vale Refeição");
+            System.out.println("6. Vale Alimentação");
+            System.out.println("7. Voltar ao Carrinho");
+            System.out.println("8. Cancelar Compra");
 
-		do {
-			pizza.showPizzas();
-			System.out.println("\nSelecione a Pizza que Gostaria de pedir");
+            try {
+                int option = scan.nextInt();
+                String payment = switch (option) {
+                    case 1 -> "Dinheiro";
+                    case 2 -> "Pix";
+                    case 3 -> "Cartão Débito";
+                    case 4 -> "Cartão Crédito";
+                    case 5 -> "Vale Refeição";
+                    case 6 -> "Vale Alimentação";
+                    case 7 -> {
+                        chooseItems();
+                        yield null;
+                    }
+                    case 8 -> {
+                        System.exit(0);
+                        yield null;
+                    }
+                    default -> null;
+                };
 
-			try {
-				selectWhole = scan.nextInt();
+                if (payment != null) {
+                    orderService.setPaymentMethod(payment);
+                    return;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida");
+                scan.nextLine();
+            }
+        }
+    }
 
-				if (selectWhole <= 0 || selectWhole >= 11) {
-					clear();
-					System.out.println("\nOpção inválida.\n");
-					System.out.println("Selecione Novamente: \n\n");
-				}
-			} catch (InputMismatchException e) {
-				clear();
-				System.out.printf("Digito inválido.%n");
-				System.out.printf("Selecione Novamente: %n%n");
-				scan.nextLine();
-			}
-		} while (selectWhole <= 0 || selectWhole >= 11);
-		cart.addItem(pizza.listPizza().get(selectWhole - 1));
-		clear();
-	}
+    private void printReceipt() {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String now = LocalDateTime.now().format(fmt);
 
-	private void selectHalfPizza() {
-		int selectHalf1 = 0;
-		int selectHalf2 = 0;
-		clear();
+        System.out.println("\n******************RECIBO******************\n");
+        System.out.printf("%29s%n", "PIZZARIA ALVES");
+        System.out.printf("%31s%n", "RUA DOS TESTE, 123");
+        System.out.printf("%27s%n", "SÃO PAULO");
+        System.out.printf("%31s%n", "FONE (11)99999-9999");
+        System.out.println("CNPJ 99.999.999/0009-99 I.E. 999999999999");
+        System.out.println(now + "     CCF:000001   COO:000001");
+        System.out.println("------------------------------------------");
+        System.out.printf("%28s%n", "CUPOM FISCAL");
 
-		do {
-			pizza.showPizzas();
-			try {
-				System.out.printf("Selecione a primeira pizza: %n%n");
-				selectHalf1 = scan.nextInt();
+        for (Object item : orderService.getCartService().getItems()) {
+            if (item instanceof HalfPizza) {
+                System.out.println(item);
+            } else if (item instanceof Pizza pizza) {
+                System.out.printf("%-20s R$ %.2f%n", pizza.getName(), pizza.getPrice());
+            } else if (item instanceof Drinks drink) {
+                System.out.printf("%-20s R$ %.2f%n", drink.getName(), drink.getPrice());
+            }
+        }
 
-				if (selectHalf1 <= 0 || selectHalf1 >= 11) {
-					clear();
-					System.out.println("\nOpção inválida.\n");
-					System.out.println("Selecione Novamente: \n\n");
-					continue;
-				}
-				System.out.println(pizza.listPizza().get(selectHalf1 - 1));
+        System.out.printf("%nTotal: R$ %.2f%n", orderService.getCartService().getSubTotal());
+        System.out.println("Forma de Pagamento: " + orderService.getPaymentMethod());
+        System.out.println("============================================");
+        customerRepository.exibirCadastro();
+        System.out.println("============================================");
+        System.out.printf("%30s%n", "VOLTE SEMPRE");
+    }
 
-				System.out.printf("%n%nSelecione a segunda pizza: %n%n");
-				selectHalf2 = scan.nextInt();
-
-				if (selectHalf2 <= 0 || selectHalf2 >= 11) {
-					clear();
-					System.out.println("\nOpção inválida.\n");
-					System.out.println("Selecione Novamente: \n\n");
-				}
-
-				cart.addHalfPizza(pizza.listPizza().get(selectHalf1 - 1), pizza.listPizza().get(selectHalf2 - 1));
-
-				if (selectHalf1 == selectHalf2) {
-					clear();
-					System.out
-							.printf("%nAs pizzas selecionadas são iguais. Por favor, selecione pizzas diferentes.%n%n");
-				}
-
-			} catch (InputMismatchException e) {
-				clear();
-				System.out.println("\nDigito inválido.\n");
-				System.out.println("Selecione Novamente: \n\n");
-				scan.nextLine();
-			}
-		} while (selectHalf1 == selectHalf2);
-		clear();
-	}
-
-	private void selectDrink() {
-		int selectDrink = 0;
-
-		while (selectDrink == 0) {
-			drink.showDrinks();
-			System.out.println("\nSelecione a bebida: ");
-			try {
-				selectDrink = scan.nextInt();
-				if (selectDrink <= 0 || selectDrink >= 6) {
-					drink.showDrinks();
-					clear();
-					System.out.println("\nOpção inválida.\n");
-					System.out.println("Selecione Novamente: \n\n");
-					selectDrink = 0;
-				} else {
-					break;
-				}
-			} catch (InputMismatchException e) {
-				clear();
-				System.out.println("\nDigito inválido.\n");
-				System.out.println("Selecione Novamente: \n\n");
-				scan.nextLine();
-				selectDrink = 0;
-			}
-		}
-		cart.addItem(drink.listDrinks().get(selectDrink - 1));
-		clear();
-	}
-
-	private void removeItem() {
-		int removeItemOption = 0;
-
-		while (removeItemOption < cart.items.size() || removeItemOption > cart.items.size()) {
-			cart.displayCart();
-			System.out.println("\n\nDigite o número do item que deseja remover: ");
-
-			try {
-				removeItemOption = scan.nextInt();
-
-				if (removeItemOption > 0 && removeItemOption <= cart.items.size()) {
-					Object removedItem = cart.items.remove(removeItemOption - 1);
-
-					if (removedItem instanceof Pizza) {
-						Pizza pizza = (Pizza) removedItem;
-						cart.subTotal -= pizza.getPrice();
-					} else if (removedItem instanceof Drinks) {
-						Drinks drink = (Drinks) removedItem;
-						cart.subTotal -= drink.getPrice();
-					} else if (removedItem instanceof HalfPizza) {
-						HalfPizza halfPizza = (HalfPizza) removedItem;
-						cart.subTotal -= halfPizza.getPrice();
-					}
-
-					System.out.println("\nItem removido: \n" + removedItem);
-					break;
-				} else {
-					System.out.println("Opção inválido. Por favor, digite um número válido.");
-				}
-			} catch (InputMismatchException e) {
-				clear();
-				System.out.println("Opção inválida");
-				scan.nextLine();
-			}
-		}
-	}
-
-	private void displayPaymentOptions() {
-		System.out.println(
-				"\n\n-------- PAGAMENTO --------\n\n" + "Qual forma de pagamento?\n" + "1. Dinheiro\n" + "2. Pix\n"
-						+ "3. Cartão Débito\n" + "4. Cartão Crédito\n" + "5. Vale Refeição\n" + "6. Vale Alimentação\n"
-						+ "---------------------------\n" + "7. Voltar para o Carrinho\n" + "8. Cancelar a compra");
-	}
-
-	private void processPayment() {
-		int paymentOption = 0;
-		selectedPaymentOption = "";
-
-		do {
-			System.out.println("Selecione o opção");
-			displayPaymentOptions();
-			try {
-				paymentOption = scan.nextInt();
-
-				if (paymentOption == 1) {
-					selectedPaymentOption = "Dinheiro";
-					break;
-				} else if (paymentOption == 2) {
-					selectedPaymentOption = "Pix";
-					break;
-				} else if (paymentOption == 3) {
-					selectedPaymentOption = "Cartão Débito";
-					break;
-				} else if (paymentOption == 4) {
-					selectedPaymentOption = "Cartão Crédito";
-					break;
-				} else if (paymentOption == 5) {
-					selectedPaymentOption = "Vale Refeição";
-					break;
-				} else if (paymentOption == 6) {
-					selectedPaymentOption = "Vale Alimentações";
-				} else if (paymentOption == 7) {
-					chooseItems();
-				} else if (paymentOption == 8) {
-					System.exit(paymentOption);
-				} else {
-					System.out.println("Opção inválida.");
-					System.out.println("Selecione novamente: ");
-				}
-
-			} catch (InputMismatchException e) {
-				clear();
-				System.out.println("\nDigito inválido.\n");
-				System.out.println("Selecione Novamente: \n\n");
-				scan.nextLine();
-			}
-
-		} while (paymentOption != 0);
-	}
-
-	public void printReceipt() {
-		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-		LocalDateTime currentTime = LocalDateTime.now();
-		String dateTime = currentTime.format(dateFormat);
-		StringBuilder receipt = new StringBuilder();
-		clear();
-
-		receipt.append("\n******************RECIBO******************\n\n");
-		receipt.append(String.format("%29s", "PIZZARIA ALVES\n"));
-		receipt.append(String.format("%31s", "RUA DOS TESTE, 123\n"));
-		receipt.append(String.format("%27s", "SÃO PAULO\n\n"));
-		receipt.append(String.format("%31s", "FONE (11)99999-9999\n"));
-		receipt.append("CNPJ 99.999.999/0009-99 I.E. 999999999999\n");
-		receipt.append(dateTime + "     CCF:000001   COO:000001\n");
-		receipt.append("------------------------------------------\n");
-		receipt.append(String.format("%28s", "CUPOM FISCAL\n"));
-		receipt.append(String.format("%-4s %37s%n", "ITEM", "VALOR"));
-		System.out.println(receipt.toString());
-		cart.listCart();
-		System.out.println("\n" + selectedPaymentOption);
-		System.out.printf("============================================%n");
-		customerRegistration.exibirCadastro();
-		System.out.printf("%n============================================%n");
-		System.out.printf("%30s", "VOLTE SEMPRE\n\n");
-	}
-
-	public void start() {
-		displayWelcome();
-		chooseItems();
-		processPayment();
-		printReceipt();
-	}
+    public void start() {
+        displayWelcome();
+        chooseItems();
+        processPayment();
+        printReceipt();
+    }
 }
