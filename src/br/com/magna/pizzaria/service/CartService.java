@@ -6,12 +6,15 @@ import java.util.List;
 import br.com.magna.pizzaria.model.Drinks;
 import br.com.magna.pizzaria.model.HalfPizza;
 import br.com.magna.pizzaria.model.Pizza;
+import br.com.magna.pizzaria.utils.ConsoleUtils;
 
-public class Cart {
+public class CartService {
+	private ConsoleUtils consoleUtils = new ConsoleUtils();
+	
 	private List<Object> items;
 	private double subTotal;
 
-	public Cart() {
+	public CartService() {
 		this.items = new ArrayList<>();
 		this.subTotal = 0.0;
 	}
@@ -46,7 +49,7 @@ public class Cart {
 			}
 		}
 	}
-
+	
 	public List<Object> getItems() {
 		return items;
 	}
@@ -58,4 +61,20 @@ public class Cart {
 	public boolean isEmpty() {
 		return items.isEmpty();
 	}
+	
+	public void displayCart() {
+		consoleUtils.clear();
+	    System.out.println("\n------------ CARRINHO ------------\n");
+	    if (items.isEmpty()) {
+	        System.out.println("Está tão vazio aqui...");
+	    }
+
+	    for (int i = 0; i < items.size(); i++) {
+	        System.out.println((i + 1) + ". " + items.get(i));
+	        System.out.println("==================================");
+	    }
+	    System.out.printf("%n..................");
+		System.out.printf("%nSubTotal: R$ %.2f%n", getSubTotal());
+	}	
+	
 }

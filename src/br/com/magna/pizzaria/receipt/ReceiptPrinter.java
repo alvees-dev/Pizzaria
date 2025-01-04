@@ -5,8 +5,10 @@ import java.time.format.DateTimeFormatter;
 
 import br.com.magna.pizzaria.customer.CustomerRepository;
 import br.com.magna.pizzaria.service.OrderService;
+import br.com.magna.pizzaria.utils.ConsoleUtils;
 
 public class ReceiptPrinter {
+	private ConsoleUtils consoleUtils = new ConsoleUtils();
     private OrderService orderService;
     private CustomerRepository customerRepository;
     
@@ -25,6 +27,7 @@ public class ReceiptPrinter {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         String now = LocalDateTime.now().format(fmt);
         
+        consoleUtils.clear();
         System.out.println("\n******************RECIBO******************\n");
         System.out.printf("%29s%n", "PIZZARIA ALVES");
         System.out.printf("%31s%n", "RUA DOS TESTES, 123");

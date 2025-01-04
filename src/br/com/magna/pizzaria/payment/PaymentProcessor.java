@@ -4,16 +4,19 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import br.com.magna.pizzaria.service.OrderService;
+import br.com.magna.pizzaria.utils.ConsoleUtils;
 
 public class PaymentProcessor {
     private Scanner scan;
     private OrderService orderService;
+    private ConsoleUtils consoleUtils;
     
     public PaymentProcessor() {
     	
     }
 
     public PaymentProcessor(OrderService orderService) {
+    	this.consoleUtils = new ConsoleUtils();
         this.scan = new Scanner(System.in);
         this.orderService = orderService;
     }
@@ -30,9 +33,11 @@ public class PaymentProcessor {
                         return;
                     }
                 } else {
+                	consoleUtils.clear();
                     System.out.println("Opção inválida");
                 }
             } catch (InputMismatchException e) {
+            	consoleUtils.clear();
                 System.out.println("Entrada inválida");
                 scan.nextLine();
             }
@@ -40,7 +45,7 @@ public class PaymentProcessor {
     }
 
     private void displayPaymentOptions() {
-        System.out.println("\n-------- PAGAMENTO --------");
+        System.out.println("\n----------- PAGAMENTO -----------\n");
         for (PaymentMethod method : PaymentMethod.values()) {
             System.out.printf("%d. %s%n", method.ordinal() + 1, method.getDescription());
         }

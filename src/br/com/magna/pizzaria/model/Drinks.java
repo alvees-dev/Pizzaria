@@ -38,7 +38,7 @@ public class Drinks {
 	}
 
 	public void showDrinks() {
-		System.out.println("--------- BEBIDAS ---------\n");
+		System.out.println("----------- BEBIDAS -----------\n");
 		for (int i = 0; i < listDrinks().size(); i++) {
 			System.out.println((i + 1) + ". " + listDrinks().get(i) + "\n");
 		}

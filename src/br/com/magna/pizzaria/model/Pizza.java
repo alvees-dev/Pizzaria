@@ -43,7 +43,7 @@ public class Pizza {
 	}
 
 	public void showPizzas() {
-		System.out.println("----------- PIZZAS -----------\n");
+		System.out.println("------------- PIZZAS -------------\n");
 		for (int i = 0; i < listPizza().size(); i++) {
 			System.out.printf("%02d", i + 1);
 			System.out.printf(".  " + listPizza().get(i) + "%n%n");
