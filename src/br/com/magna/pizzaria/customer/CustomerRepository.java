@@ -3,6 +3,7 @@ package br.com.magna.pizzaria.customer;
 import java.util.Scanner;
 
 public class CustomerRepository {
+	
     private final Scanner scanner;
     private Customer customer;
 

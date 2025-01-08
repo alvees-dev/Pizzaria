@@ -1,6 +1,7 @@
 package br.com.magna.pizzaria.payment;
 
 public enum PaymentMethod {
+	
     CASH("DINHEIRO"),
     PIX("PIX"),
     DEBIT_CARD("CARTÃO DÉBITO"),
@@ -21,6 +22,7 @@ public enum PaymentMethod {
     }
 
     public static PaymentMethod fromOption(int option) {
+    	
         return switch (option) {
             case 1 -> CASH;
             case 2 -> PIX;

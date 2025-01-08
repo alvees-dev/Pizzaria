@@ -10,24 +10,30 @@ import br.com.magna.pizzaria.service.OrderService;
 import br.com.magna.pizzaria.utils.ConsoleUtils;
 
 public class CartManager {
-	private ConsoleUtils consoleUtils = new ConsoleUtils();
-	private Scanner scanner;
-	private CartService cartService;
-	private Pizza pizza;
-	private Drinks drink;
 	
-	public CartManager(OrderService orderService) {
-		this.scanner = new Scanner(System.in);
-		this.pizza = new Pizza();
-		this.drink = new Drinks();
-		this.cartService = new CartService();
-	}
+    private ConsoleUtils consoleUtils = new ConsoleUtils();
+    private Scanner scanner;
+    private OrderService orderService;
+    private Pizza pizza;
+    private Drinks drink;
+    
+    public CartManager(OrderService orderService) {
+        this.scanner = new Scanner(System.in);
+        this.pizza = new Pizza();
+        this.drink = new Drinks();
+        this.orderService = orderService;
+    }
+    
+    private CartService getCartService() {
+    	return orderService.getCartService();
+    	
+    }
 
 	public void chooseItems() {
 		boolean itemsChosen = false;
 
 		while (!itemsChosen) {
-			cartService.displayCart();
+			getCartService().displayCart();
 			displayMenu();
 
 			try {
@@ -91,7 +97,7 @@ public class CartManager {
 	        try {
 	            int choice = scanner.nextInt();
 	            if (choice > 0 && choice <= pizza.listPizza().size()) {
-	                cartService.addItem(pizza.listPizza().get(choice - 1));
+	                getCartService().addItem(pizza.listPizza().get(choice - 1));
 	                break;
 	            }
 	            System.out.println("Opção inválida");
@@ -112,7 +118,7 @@ public class CartManager {
 	            int second = scanner.nextInt();
 
 	            if (isValidPizzaSelection(first, second)) {
-	                cartService.addHalfPizza(pizza.listPizza().get(first - 1),
+	                getCartService().addHalfPizza(pizza.listPizza().get(first - 1),
 	                        pizza.listPizza().get(second - 1));
 	                break;
 	            }
@@ -132,7 +138,7 @@ public class CartManager {
 	        try {
 	            int choice = scanner.nextInt();
 	            if (choice > 0 && choice <= drink.listDrinks().size()) {
-	                cartService.addItem(drink.listDrinks().get(choice - 1));
+	                getCartService().addItem(drink.listDrinks().get(choice - 1));
 	                break;
 	            }
 	            System.out.println("Opção inválida");
@@ -144,7 +150,7 @@ public class CartManager {
 	}
 
 	private void handleRemoveItem() {
-	    if (cartService.isEmpty()) {
+	    if (getCartService().isEmpty()) {
 	        consoleUtils.clear();
 	        System.out.println("Não há itens para remover");
 	    } else {
@@ -153,12 +159,12 @@ public class CartManager {
 	}
 
 	private void removeItem() {
-	    cartService.displayCart();
+	    getCartService().displayCart();
 	    System.out.println("\nDigite o número do item para remover: ");
 	    try {
 	        int index = scanner.nextInt() - 1;
-	        if (index >= 0 && index < cartService.getItems().size()) {
-	            cartService.removeItem(index);
+	        if (index >= 0 && index < getCartService().getItems().size()) {
+	            getCartService().removeItem(index);
 	        } else {
 	            System.out.println("Índice inválido");
 	        }
@@ -176,7 +182,7 @@ public class CartManager {
 	}
 
 	private boolean handleOrderCompletion() {
-	    if (!cartService.isEmpty()) {
+	    if (!getCartService().isEmpty()) {
 	        return true;
 	    } else {
 	        consoleUtils.clear();

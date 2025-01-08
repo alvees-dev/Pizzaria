@@ -7,6 +7,7 @@ import br.com.magna.pizzaria.service.OrderService;
 import br.com.magna.pizzaria.utils.ConsoleUtils;
 
 public class PaymentProcessor {
+	
     private Scanner scan;
     private OrderService orderService;
     private ConsoleUtils consoleUtils;
@@ -22,6 +23,7 @@ public class PaymentProcessor {
     }
 
     public void processPayment() {
+    	
         while (true) {
             displayPaymentOptions();
             try {
@@ -45,6 +47,7 @@ public class PaymentProcessor {
     }
 
     private void displayPaymentOptions() {
+    	
         System.out.println("\n----------- PAGAMENTO -----------\n");
         for (PaymentMethod method : PaymentMethod.values()) {
             System.out.printf("%d. %s%n", method.ordinal() + 1, method.getDescription());
@@ -52,6 +55,7 @@ public class PaymentProcessor {
     }
 
     private boolean handlePaymentChoice(PaymentMethod paymentMethod) {
+    	
         switch (paymentMethod) {
             case CASH, PIX, DEBIT_CARD, CREDIT_CARD, MEAL_VOUCHER, FOOD_VOUCHER -> {
                 orderService.setPaymentMethod(paymentMethod.getDescription());

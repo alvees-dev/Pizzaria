@@ -9,6 +9,7 @@ import br.com.magna.pizzaria.model.Pizza;
 import br.com.magna.pizzaria.utils.ConsoleUtils;
 
 public class MenuManager {
+	
     private Scanner scanner;
     private Pizza pizza;
     private Drinks drink;
@@ -34,6 +35,7 @@ public class MenuManager {
     }
     
     private boolean showMainMenu() {
+    	
         int mainMenu = 0;
         do {
             System.out.println("\n------- MENU PRINCIPAL --------\n");

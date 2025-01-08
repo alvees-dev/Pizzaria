@@ -9,6 +9,7 @@ import br.com.magna.pizzaria.model.Pizza;
 import br.com.magna.pizzaria.utils.ConsoleUtils;
 
 public class CartService {
+	
 	private ConsoleUtils consoleUtils = new ConsoleUtils();
 	
 	private List<Object> items;
@@ -38,6 +39,7 @@ public class CartService {
 	}
 
 	private void calculateSubTotal() {
+		
 		subTotal = 0.0;
 		for (Object item : items) {
 			if (item instanceof Pizza) {
@@ -63,8 +65,10 @@ public class CartService {
 	}
 	
 	public void displayCart() {
+		
 		consoleUtils.clear();
 	    System.out.println("\n------------ CARRINHO ------------\n");
+	    
 	    if (items.isEmpty()) {
 	        System.out.println("Está tão vazio aqui...");
 	    }

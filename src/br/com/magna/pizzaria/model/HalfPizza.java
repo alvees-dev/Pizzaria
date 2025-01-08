@@ -10,8 +10,8 @@ public class HalfPizza {
         this.pizza2 = pizza2;
     }
 
-    public String getName() {
-    	return String.format("%-20s %.2f%n%-20s",
+    public String getHalfPizza() {
+    	return String.format("%-35s R$ %.2f%n%-20s",
     			"Meia " + pizza1.getName(), 
     			getPrice(), 
     			"Meia " + pizza2.getName());

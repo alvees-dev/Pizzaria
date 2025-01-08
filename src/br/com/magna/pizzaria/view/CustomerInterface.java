@@ -1,4 +1,3 @@
-// CustomerInterface.java
 package br.com.magna.pizzaria.view;
 
 import br.com.magna.pizzaria.customer.CustomerRepository;
@@ -13,6 +12,7 @@ public class CustomerInterface {
     private CartManager cartManager;
     private PaymentProcessor paymentProcessor;
     private ReceiptPrinter receiptPrinter;
+
     
     public CustomerInterface() {
     	
@@ -27,9 +27,9 @@ public class CustomerInterface {
 
 	public void start() {
 		
-        menuManager.displayWelcome();
+        //menuManager.displayWelcome();
         cartManager.chooseItems();
-        paymentProcessor.processPayment();
+        //paymentProcessor.processPayment();
         receiptPrinter.printReceipt();
     }
 }
