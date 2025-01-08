@@ -27,9 +27,9 @@ public class CustomerInterface {
 
 	public void start() {
 		
-        //menuManager.displayWelcome();
+        menuManager.displayWelcome();
         cartManager.chooseItems();
-        //paymentProcessor.processPayment();
+        paymentProcessor.processPayment();
         receiptPrinter.printReceipt();
     }
 }
