@@ -36,7 +36,7 @@ public class OrderService {
 			if (item instanceof HalfPizza halfPizza) {
 				System.out.printf(halfPizza.getHalfPizza());
 			} else if (item instanceof Pizza pizza) {
-				System.out.printf("%-35s R$ %.2f%n%n", pizza.getName(), pizza.getPrice());
+				System.out.printf("%n%n%-35s R$ %.2f", pizza.getName(), pizza.getPrice());
 			} else if (item instanceof Drinks drink) {
 				System.out.printf("%n%n%-35s R$ %.2f", drink.getName(), drink.getPrice());
 			}

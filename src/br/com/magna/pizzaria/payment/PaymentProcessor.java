@@ -5,10 +5,12 @@ import java.util.Scanner;
 
 import br.com.magna.pizzaria.service.OrderService;
 import br.com.magna.pizzaria.utils.ConsoleUtils;
+import br.com.magna.pizzaria.view.CartManager;
 
 public class PaymentProcessor {
 	
     private Scanner scan;
+    private CartManager cartManager;
     private OrderService orderService;
     private ConsoleUtils consoleUtils;
     
@@ -20,6 +22,7 @@ public class PaymentProcessor {
     	this.consoleUtils = new ConsoleUtils();
         this.scan = new Scanner(System.in);
         this.orderService = orderService;
+        this.cartManager = new CartManager(orderService);
     }
 
     public void processPayment() {
@@ -62,14 +65,14 @@ public class PaymentProcessor {
                 return true;
             }
             case RETURN_TO_CART -> {
-                System.out.println("Retornando ao carrinho...");
-                return true;
+            	consoleUtils.clear();
+                cartManager.chooseItems();
+                break;
             }
             case CANCEL_ORDER -> {
                 System.out.println("Compra cancelada!");
                 System.exit(0);
             }
-            default -> throw new IllegalStateException("Unexpected value: " + paymentMethod);
         }
         return false;
     }

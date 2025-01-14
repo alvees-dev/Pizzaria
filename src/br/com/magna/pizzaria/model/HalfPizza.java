@@ -11,7 +11,7 @@ public class HalfPizza {
     }
 
     public String getHalfPizza() {
-    	return String.format("%-35s R$ %.2f%n%-20s",
+    	return String.format("%n%n%-35s R$ %.2f%n%-20s",
     			"Meia " + pizza1.getName(), 
     			getPrice(), 
     			"Meia " + pizza2.getName());

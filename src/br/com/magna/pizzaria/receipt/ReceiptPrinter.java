@@ -38,7 +38,7 @@ public class ReceiptPrinter {
         System.out.println("CNPJ 99.999.999/0009-99 I.E. 999999999999");
         System.out.println(now + "     CCF:000001   COO:000001");
         System.out.println("--------------------------- ------------------");
-        System.out.printf("%28s%n%n", "CUPOM FISCAL");
+        System.out.printf("%28s", "CUPOM FISCAL");
     }
     
     private void printOrderDetails() {
